@@ -13,7 +13,6 @@ import About from './pages/About';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Terms from './pages/Terms';
 import Contact from './pages/Contact';
-import WhitePage from './pages/WhitePage';
 import CartModal from './components/CartModal';
 
 // Componente para garantir que a página sempre role para o topo ao mudar de rota
@@ -67,31 +66,11 @@ const CartAutoOpenTrigger = ({ onOpen }: { onOpen: () => void }) => {
 
 const App: React.FC = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
-  
-  // LÓGICA DE CLOAKING
-  // Verifica se o parâmetro 'source' existe na URL ou se o usuário já desbloqueou nesta sessão
-  const [isUnlocked, setIsUnlocked] = useState(() => {
-    const search = window.location.search || window.location.hash;
-    return search.includes('source') || sessionStorage.getItem('site_unlocked') === 'true';
-  });
-
-  useEffect(() => {
-    const search = window.location.search || window.location.hash;
-    if (search.includes('source')) {
-      sessionStorage.setItem('site_unlocked', 'true');
-      setIsUnlocked(true);
-    }
-  }, []);
-
-  // Se não estiver desbloqueado, renderiza apenas a White Page (Safe Page)
-  if (!isUnlocked) {
-    return <WhitePage />;
-  }
 
   return (
     <CartProvider>
       <Router>
-        <InitialLoadHandler isUnlocked={isUnlocked} />
+        <InitialLoadHandler isUnlocked={true} />
         <CartAutoOpenTrigger onOpen={() => setIsCartOpen(true)} />
         
         <div className="min-h-screen flex flex-col bg-white">
